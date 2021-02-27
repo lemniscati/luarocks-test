@@ -1,0 +1,32 @@
+name: msys2-build
+
+on: [push, pull_request]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+        run:
+            shell: msys2 {0}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: msys2/setup-msys2@v2
+      with:
+          msystem: MINGW64
+          update: true
+          path-type: minimal
+          install:
+            git
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-lua
+            mingw-w64-x86_64-lua-luarocks
+
+    - name: Build
+      shell: bash
+      run: |
+          pwd
+          bash build.sh
+
