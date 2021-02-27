@@ -19,6 +19,10 @@ stages:
     - /^w_/
 
 ################################################################
+archlinux-base:
+  image: lemniscati/lua:archlinux-base
+  <<: *build_settings
+
 debian-10:
   image: lemniscati/lua:debian-10
   <<: *build_settings
