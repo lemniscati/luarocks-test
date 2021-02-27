@@ -1,0 +1,46 @@
+################################################################
+stages:
+  - build
+
+.build_settings: &build_settings
+  stage: build
+  variables:
+    GIT_SUBMODULE_STRATEGY: none
+  script:
+    - echo "${CI_PROJECT_NAME} ${CI_COMMIT_REF_NAME}" | tee -a ${CI_JOB_STAGE}_${CI_JOB_NAME}.log
+    - echo "${CI_COMMIT_TIMESTAMP} ${CI_COMMIT_SHA}" | tee -a ${CI_JOB_STAGE}_${CI_JOB_NAME}.log
+    - echo "${CI_JOB_STAGE} ${CI_JOB_NAME} ${CI_JOB_IMAGE}" | tee -a ${CI_JOB_STAGE}_${CI_JOB_NAME}.log
+    - ./build.sh | tee -a ${CI_JOB_STAGE}-${CI_JOB_NAME}.log
+  artifacts:
+    paths:
+      - ./stages/
+      - ./${CI_JOB_STAGE}_${CI_JOB_NAME}.log
+  except:
+    - /^w_/
+
+################################################################
+debian-10:
+  image: lemniscati/lua:debian-10
+  <<: *build_settings
+
+debian-11:
+  image: lemniscati/lua:debian-11
+  <<: *build_settings
+
+fedora-33:
+  image: lemniscati/lua:fedora-33
+  <<: *build_settings
+
+fedora-35:
+  image: lemniscati/lua:fedora-35
+  <<: *build_settings
+
+opensuse-leap-15.2:
+  image: lemniscati/lua:opensuse-leap-15.2
+  <<: *build_settings
+
+ubuntu-20.04:
+  image: lemniscati/lua:ubuntu-20.04
+  <<: *build_settings
+
+################################################################
