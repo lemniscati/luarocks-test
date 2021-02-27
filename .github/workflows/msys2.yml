@@ -28,5 +28,5 @@ jobs:
       shell: bash
       run: |
           pwd
-          bash build.sh
+          msys2 ./build.sh
 
